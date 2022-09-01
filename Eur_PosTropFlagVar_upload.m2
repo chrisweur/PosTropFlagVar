@@ -1,5 +1,5 @@
 -*---------------------------------------------------------------------------------------------
-M2 code accompanynig section 8 of "Polyhedral and tropical geometry of flag positroids"
+M2 code accompanying section 8 of "Polyhedral and tropical geometry of flag positroids"
 Author: Christopher Eur
 Last update: 9/1/2022
 
