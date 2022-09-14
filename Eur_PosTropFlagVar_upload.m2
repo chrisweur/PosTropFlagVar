@@ -1,14 +1,15 @@
 -*---------------------------------------------------------------------------------------------
 M2 code accompanying section 8 of "Polyhedral and tropical geometry of flag positroids"
 Author: Christopher Eur
-Last update: 9/1/2022
+Last update: 9/15/2022
 
 Comments:
 * Fl_5 data imported from [Bossinger-Lamboglia-Mincheva-Mohammadi], available at:
 https://github.com/Saralamboglia/Toric-Degenerations/blob/master/Flag5.rtf
-* Thanks Lara Bossinger for sharing a computer ready TrGr(3,6) data
+* Thanks Lara Bossinger for many engaging discussions and a computer ready TrGr(3,6) data 
 * Thanks Jonathan Boretsky for identifying the Bruhat intervals in the coherent subdivisions
 * Some long computations were done on the server germain.math.harvard.edu
+* More in-depth computation about TrFl_4^+ done in the file "Eur_TrFl4+_clusterVar.m2"
 ---------------------------------------------------------------------------------------------*-
 
 needsPackage "Matroids"
@@ -169,9 +170,10 @@ fVector F
 R = rays F
 SQ = select(faces(0,F), f -> #f > 3) --the three "squares" that becomes subdivided in (ii) 
 
---the fan structure (ii) for FlDr_4 ( = TrFl_4 by [BEZ21] )
+--the fan structure (iii) for FlDr_4 ( = TrFl_4 by [BEZ21] )
 F = fan tropicalVariety I 
 fVector F
+R = rays F
 SQ = select(faces(0,F), f -> #f > 3) -- no squares now
 
 
@@ -200,15 +202,23 @@ vecToWeight = (v,p) -> (
     sum(n-1, i -> v_(var#(sort c_(toList(0..i)))))
     )
 
---subdivisions from the simplicial faces of (i) of TrFl_4^+
+--subdivisions from the faces of (iii) of TrFl_4^+
 P = permutations 4
 M = transpose matrix P
 SP = apply(posFacets, q -> (
-	v := sum(q, i -> (i+1) * R_i);
+	v := sum(q, i -> random(1,10) * R_i);
 	w := matrix {apply(P, i -> vecToWeight(v,i))};
 	time (myRegSubdiv(M,w)/sort)
 	)
     )
+#unique(SP/(i -> i/sort)/set) == #SP --all different
+
+--subdivisions from the rays
+P = permutations 4
+M = transpose matrix P
+L = apply(posRays, v -> myRegSubdiv(M, matrix {apply(P, i -> vecToWeight(R_v,i))}))
+
+
 
 --check that ones subdividing into six parts are cubes
 SP/(i -> #i)
