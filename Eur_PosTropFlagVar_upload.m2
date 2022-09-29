@@ -23,7 +23,7 @@ vecToChain = L -> reverse apply(#L, i -> position(L, j -> j == i))
 --my regular subdivision that corrects for the random labelling when the lifted polyhedron is formed
 myRegSubdiv = (M,w) -> (
     PR := convexHull(M||w,matrix (toList(numRows M:{0})|{{1}}));
-    V := (vertices PR)^(apply(n, i -> i));
+    V := (vertices PR)^(apply(numrows M, i -> i));
     R := (sort select(faces (1,PR), f -> #(f#1) ==0))/(f -> V_(f#0))/sort
     )
 
